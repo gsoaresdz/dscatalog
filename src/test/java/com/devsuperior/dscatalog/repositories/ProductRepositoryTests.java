@@ -60,4 +60,20 @@ public class ProductRepositoryTests {
 			repository.deleteById(nonExintingId);
 		});
 	}
+
+	@Test
+	public void findByIdShouldReturnNonEmptyOptionalProductWhenIdExists() {
+
+		Optional<Product> result = repository.findById(exintingId);
+
+		Assertions.assertTrue(result.isPresent());
+	}
+
+	@Test
+	public void findByIdShouldReturnEmptyOptionalProductWhenIdDoesNotExists() {
+
+		Optional<Product> result = repository.findById(nonExintingId);
+
+		Assertions.assertTrue(result.isEmpty());
+	}
 }
