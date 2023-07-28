@@ -2,6 +2,8 @@ package com.devsuperior.dscatalog.resources;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -23,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.services.ProductService;
+import com.devsuperior.dscatalog.services.exceptions.DataBaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 import com.devsuperior.dscatalog.test.Factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,12 +46,14 @@ public class ProductResourceTests {
 	private PageImpl<ProductDTO> page;
 	private Long existingId;
 	private Long nonExistingId;
+	private Long dependentId;
 
 	@BeforeEach
 	void setUp() throws Exception {
 
 		existingId = 1L;
 		nonExistingId = 2L;
+		dependentId = 3L;
 
 		productDTO = Factory.createProductDTO();
 		page = new PageImpl<>(List.of(productDTO));
@@ -57,8 +62,13 @@ public class ProductResourceTests {
 
 		when(service.findById(existingId)).thenReturn(productDTO);
 		when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+
 		when(service.update(eq(existingId), any())).thenReturn(productDTO);
 		when(service.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
+
+		doNothing().when(service).delete(existingId);
+		doThrow(ResourceNotFoundException.class).when(service).delete(existingId);
+		doThrow(DataBaseException.class).when(service).delete(dependentId);
 
 	}
 
