@@ -71,7 +71,7 @@ public class ProductResourceTests {
 		when(service.insert(any())).thenReturn(productDTO);
 
 		doNothing().when(service).delete(existingId);
-		doThrow(ResourceNotFoundException.class).when(service).delete(existingId);
+		doThrow(ResourceNotFoundException.class).when(service).delete(nonExistingId);
 		doThrow(DataBaseException.class).when(service).delete(dependentId);
 
 	}
