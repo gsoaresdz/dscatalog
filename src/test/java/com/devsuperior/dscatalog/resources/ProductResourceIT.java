@@ -39,7 +39,7 @@ public class ProductResourceIT {
 	public void fubdAllShouldReturnSortedPageWhenSortByName() throws Exception {
 
 		ResultActions result = mockMvc
-				.perform(get("/products?page=0&size=12%sort=name,asc").accept(MediaType.APPLICATION_JSON));
+				.perform(get("/products?page=0&size=12&sort=name,asc").accept(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$.totalElements").value(countTotalProducts));
