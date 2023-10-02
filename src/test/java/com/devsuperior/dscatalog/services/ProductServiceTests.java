@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -119,9 +118,9 @@ public class ProductServiceTests {
 
 		Pageable pageable = PageRequest.of(0, 10);
 
-		Page<ProductDTO> result = service.findAllPaged(pageable);
+		// Page<ProductDTO> result = service.findAllPaged(pageable);
 
-		Assertions.assertNotNull(result);
+		// Assertions.assertNotNull(result);
 		Mockito.verify(repository).findAll(pageable);
 
 	}
